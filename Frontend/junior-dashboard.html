@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junior Dashboard - MySeniorBuddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #0891b2;
+            --primary-cyan-light: #06b6d4;
+            --primary-cyan-dark: #0e7490;
+            --neutral-white: #ffffff;
+            --neutral-gray-50: #f9fafb;
+            --neutral-gray-100: #f3f4f6;
+            --neutral-gray-600: #4b5563;
+            --accent-gray-800: #1f2937;
+            --accent-gray-900: #111827;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--neutral-gray-50) 0%, var(--neutral-white) 100%);
+            min-height: 100vh;
+            color: var(--accent-gray-800);
+        }
+
+        /* Header */
+        .header {
+            background: var(--neutral-white);
+            box-shadow: 0 4px 20px rgba(8, 145, 178, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--neutral-gray-600);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-cyan);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.1rem;
+            color: var(--neutral-gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--neutral-white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(8, 145, 178, 0.1);
+            transform: perspective(1000px) rotateX(0deg);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(8, 145, 178, 0.1);
+        }
+
+        .stat-card:hover {
+            transform: perspective(1000px) rotateX(5deg) translateY(-8px);
+            box-shadow: 0 16px 48px rgba(8, 145, 178, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.mentors {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-cyan-light));
+            color: white;
+        }
+
+        .stat-icon.requests {
+            background: linear-gradient(135deg, var(--warning-orange), #fbbf24);
+            color: white;
+        }
+
+        .stat-icon.sessions {
+            background: linear-gradient(135deg, var(--success-green), #34d399);
+            color: white;
+        }
+
+        .stat-icon.progress {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--neutral-gray-600);
+            font-weight: 500;
+        }
+
+        /* Section Cards */
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-card {
+            background: var(--neutral-white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(8, 145, 178, 0.1);
+            transform: perspective(1000px) rotateY(0deg);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(8, 145, 178, 0.1);
+        }
+
+        .section-card:hover {
+            transform: perspective(1000px) rotateY(2deg) translateY(-4px);
+            box-shadow: 0 16px 48px rgba(8, 145, 178, 0.15);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Mentor Cards */
+        .mentor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mentor-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--neutral-gray-50);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .mentor-item:hover {
+            background: var(--neutral-gray-100);
+            transform: translateX(4px);
+        }
+
+        .mentor-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .mentor-info h4 {
+            font-weight: 600;
+            color: var(--accent-gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .mentor-info p {
+            color: var(--neutral-gray-600);
+            font-size: 0.9rem;
+        }
+
+        .mentor-status {
+            margin-left: auto;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-green);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-orange);
+        }
+
+        /* Request Cards */
+        .request-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .request-item {
+            padding: 1.5rem;
+            background: var(--neutral-gray-50);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-cyan);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .request-title {
+            font-weight: 600;
+            color: var(--accent-gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .request-date {
+            color: var(--neutral-gray-600);
+            font-size: 0.9rem;
+        }
+
+        .request-message {
+            color: var(--neutral-gray-600);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-cyan-light));
+            color: white;
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .btn-primary:hover {
+            transform: perspective(1000px) rotateX(-5deg) translateY(-2px);
+            box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--neutral-white);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-cyan);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--neutral-gray-600);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">MySeniorBuddy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="junior-dashboard.html" class="active">Junior Dashboard</a></li>
+                <li><a href="senior-dashboard.html">Senior Dashboard</a></li>
+                <li><a href="mentor-dashboard.html">My Profile</a></li>
+                <li><a href="create-profile.html">Create Profile</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Junior Dashboard</h1>
+            <p class="dashboard-subtitle">Track your mentorship journey and connect with experienced professionals</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon mentors">👨‍💼</div>
+                <div class="stat-number" id="mentorCount">3</div>
+                <div class="stat-label">Active Mentors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon requests">📝</div>
+                <div class="stat-number" id="requestCount">2</div>
+                <div class="stat-label">Pending Requests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon sessions">🎯</div>
+                <div class="stat-number" id="sessionCount">12</div>
+                <div class="stat-label">Sessions Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon progress">📈</div>
+                <div class="stat-number" id="progressCount">85%</div>
+                <div class="stat-label">Learning Progress</div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="section-grid">
+            <!-- My Mentors -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    👨‍🏫 My Mentors
+                </h2>
+                <div class="mentor-list" id="myMentors">
+                    <div class="mentor-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMwODkxYjIiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K" alt="John Smith" class="mentor-avatar">
+                        <div class="mentor-info">
+                            <h4>John Smith</h4>
+                            <p>Senior Software Engineer</p>
+                        </div>
+                        <span class="mentor-status status-active">Active</span>
+                    </div>
+                    <div class="mentor-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNmNTllMGIiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K" alt="Sarah Johnson" class="mentor-avatar">
+                        <div class="mentor-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Product Manager</p>
+                        </div>
+                        <span class="mentor-status status-active">Active</span>
+                    </div>
+                    <div class="mentor-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMxMGI5ODEiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K" alt="Mike Chen" class="mentor-avatar">
+                        <div class="mentor-info">
+                            <h4>Mike Chen</h4>
+                            <p>Data Scientist</p>
+                        </div>
+                        <span class="mentor-status status-pending">Pending</span>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <a href="index.html" class="btn btn-primary">Find More Mentors</a>
+                </div>
+            </div>
+
+            <!-- Recent Requests -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    📋 Recent Requests
+                </h2>
+                <div class="request-list" id="recentRequests">
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div>
+                                <div class="request-title">Mentorship Request to John Smith</div>
+                                <div class="request-date">2 days ago</div>
+                            </div>
+                            <span class="mentor-status status-active">Accepted</span>
+                        </div>
+                        <div class="request-message">
+                            Looking for guidance in full-stack development and career growth in tech industry.
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div>
+                                <div class="request-title">Mentorship Request to Sarah Johnson</div>
+                                <div class="request-date">5 days ago</div>
+                            </div>
+                            <span class="mentor-status status-pending">Pending</span>
+                        </div>
+                        <div class="request-message">
+                            Interested in learning about product management and user experience design.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Progress Section -->
+        <div class="section-card" style="margin-bottom: 2rem;">
+            <h2 class="section-title">
+                📚 Learning Progress
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div style="text-align: center; padding: 1.5rem; background: var(--neutral-gray-50); border-radius: 12px;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💻</div>
+                    <h4 style="margin-bottom: 0.5rem;">Frontend Development</h4>
+                    <div style="background: var(--neutral-gray-100); height: 8px; border-radius: 4px; margin-bottom: 0.5rem;">
+                        <div style="background: var(--primary-cyan); height: 100%; width: 85%; border-radius: 4px;"></div>
+                    </div>
+                    <span style="color: var(--neutral-gray-600); font-size: 0.9rem;">85% Complete</span>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--neutral-gray-50); border-radius: 12px;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎨</div>
+                    <h4 style="margin-bottom: 0.5rem;">UI/UX Design</h4>
+                    <div style="background: var(--neutral-gray-100); height: 8px; border-radius: 4px; margin-bottom: 0.5rem;">
+                        <div style="background: var(--warning-orange); height: 100%; width: 60%; border-radius: 4px;"></div>
+                    </div>
+                    <span style="color: var(--neutral-gray-600); font-size: 0.9rem;">60% Complete</span>
+                </div>
+                <div style="text-align: center; padding: 1.5rem; background: var(--neutral-gray-50); border-radius: 12px;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                    <h4 style="margin-bottom: 0.5rem;">Data Analysis</h4>
+                    <div style="background: var(--neutral-gray-100); height: 8px; border-radius: 4px; margin-bottom: 0.5rem;">
+                        <div style="background: var(--success-green); height: 100%; width: 40%; border-radius: 4px;"></div>
+                    </div>
+                    <span style="color: var(--neutral-gray-600); font-size: 0.9rem;">40% Complete</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            loadUserProgress();
+        });
+
+        function initializeDashboard() {
+            // Add smooth scroll behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add intersection observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards
+            document.querySelectorAll('.stat-card, .section-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        function loadUserProgress() {
+            // Simulate loading user data
+            setTimeout(() => {
+                animateCounters();
+            }, 500);
+        }
+
+        function animateCounters() {
+            const counters = [
+                { id: 'mentorCount', target: 3 },
+                { id: 'requestCount', target: 2 },
+                { id: 'sessionCount', target: 12 }
+            ];
+
+            counters.forEach(counter => {
+                const element = document.getElementById(counter.id);
+                let current = 0;
+                const increment = counter.target / 20;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= counter.target) {
+                        current = counter.target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, 50);
+            });
+        }
+
+        // Add click handlers for interactive elements
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-primary')) {
+                e.target.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    e.target.style.transform = '';
+                }, 150);
+            }
+        });
+    </script>
+</body>
+</html>

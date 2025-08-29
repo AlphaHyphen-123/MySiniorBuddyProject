@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Dashboard - MySeniorBuddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #0891b2;
+            --primary-cyan-light: #06b6d4;
+            --primary-cyan-dark: #0e7490;
+            --neutral-white: #ffffff;
+            --neutral-gray-50: #f9fafb;
+            --neutral-gray-100: #f3f4f6;
+            --neutral-gray-600: #4b5563;
+            --accent-gray-800: #1f2937;
+            --accent-gray-900: #111827;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--neutral-gray-50) 0%, var(--neutral-white) 100%);
+            min-height: 100vh;
+            color: var(--accent-gray-800);
+        }
+
+        /* Header */
+        .header {
+            background: var(--neutral-white);
+            box-shadow: 0 4px 20px rgba(8, 145, 178, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--neutral-gray-600);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-cyan);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.1rem;
+            color: var(--neutral-gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--neutral-white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(8, 145, 178, 0.1);
+            transform: perspective(1000px) rotateX(0deg);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(8, 145, 178, 0.1);
+        }
+
+        .stat-card:hover {
+            transform: perspective(1000px) rotateX(5deg) translateY(-8px);
+            box-shadow: 0 16px 48px rgba(8, 145, 178, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.juniors {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-cyan-light));
+            color: white;
+        }
+
+        .stat-icon.sessions {
+            background: linear-gradient(135deg, var(--success-green), #34d399);
+            color: white;
+        }
+
+        .stat-icon.rating {
+            background: linear-gradient(135deg, var(--warning-orange), #fbbf24);
+            color: white;
+        }
+
+        .stat-icon.seniors {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--neutral-gray-600);
+            font-weight: 500;
+        }
+
+        /* Section Cards */
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-card {
+            background: var(--neutral-white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(8, 145, 178, 0.1);
+            transform: perspective(1000px) rotateY(0deg);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(8, 145, 178, 0.1);
+        }
+
+        .section-card:hover {
+            transform: perspective(1000px) rotateY(2deg) translateY(-4px);
+            box-shadow: 0 16px 48px rgba(8, 145, 178, 0.15);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Senior Cards */
+        .senior-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .senior-card {
+            background: var(--neutral-gray-50);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(8, 145, 178, 0.1);
+        }
+
+        .senior-card:hover {
+            background: var(--neutral-white);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(8, 145, 178, 0.15);
+        }
+
+        .senior-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .senior-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .senior-info h4 {
+            font-weight: 600;
+            color: var(--accent-gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .senior-info p {
+            color: var(--neutral-gray-600);
+            font-size: 0.9rem;
+        }
+
+        .senior-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .senior-stat {
+            text-align: center;
+        }
+
+        .senior-stat-number {
+            font-weight: 600;
+            color: var(--primary-cyan);
+        }
+
+        .senior-stat-label {
+            color: var(--neutral-gray-600);
+            font-size: 0.8rem;
+        }
+
+        .senior-technologies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(8, 145, 178, 0.1);
+            color: var(--primary-cyan);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Request Cards */
+        .request-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .request-item {
+            padding: 1.5rem;
+            background: var(--neutral-gray-50);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-cyan);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .request-title {
+            font-weight: 600;
+            color: var(--accent-gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .request-date {
+            color: var(--neutral-gray-600);
+            font-size: 0.9rem;
+        }
+
+        .request-message {
+            color: var(--neutral-gray-600);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-cyan-light));
+            color: white;
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .btn-primary:hover {
+            transform: perspective(1000px) rotateX(-5deg) translateY(-2px);
+            box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--neutral-white);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-cyan);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--error-red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--neutral-gray-600);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .senior-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">MySeniorBuddy</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="junior-dashboard.html">Junior Dashboard</a></li>
+                <li><a href="senior-dashboard.html" class="active">Senior Dashboard</a></li>
+                <li><a href="mentor-dashboard.html">My Profile</a></li>
+                <li><a href="create-profile.html">Create Profile</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Senior Dashboard</h1>
+            <p class="dashboard-subtitle">Connect with fellow seniors and manage your mentoring community</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon juniors">👨‍🎓</div>
+                <div class="stat-number" id="juniorCount">24</div>
+                <div class="stat-label">Active Juniors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon sessions">🎯</div>
+                <div class="stat-number" id="sessionCount">156</div>
+                <div class="stat-label">Total Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon rating">⭐</div>
+                <div class="stat-number" id="ratingCount">4.8</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon seniors">👥</div>
+                <div class="stat-number" id="seniorCount">12</div>
+                <div class="stat-label">Fellow Seniors</div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="section-grid">
+            <!-- Fellow Seniors -->
+            <div class="section-card" style="grid-column: 1 / -1;">
+                <h2 class="section-title">
+                    👨‍💼 Fellow Seniors
+                </h2>
+                <div class="senior-grid" id="seniorGrid">
+                    <!-- Senior cards will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Mentorship Requests -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    📋 Mentorship Requests
+                </h2>
+                <div class="request-list" id="mentorshipRequests">
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div>
+                                <div class="request-title">Alex Johnson</div>
+                                <div class="request-date">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="request-message">
+                            Hi! I'm a junior developer looking for guidance in React and Node.js. I'd love to learn from your experience in full-stack development.
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-success btn-sm" onclick="acceptRequest(this)">Accept</button>
+                            <button class="btn btn-danger btn-sm" onclick="declineRequest(this)">Decline</button>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div>
+                                <div class="request-title">Maria Garcia</div>
+                                <div class="request-date">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="request-message">
+                            I'm transitioning into data science and would appreciate mentorship on machine learning and Python best practices.
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-success btn-sm" onclick="acceptRequest(this)">Accept</button>
+                            <button class="btn btn-danger btn-sm" onclick="declineRequest(this)">Decline</button>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div>
+                                <div class="request-title">David Kim</div>
+                                <div class="request-date">3 days ago</div>
+                            </div>
+                        </div>
+                        <div class="request-message">
+                            Looking for career advice and guidance on moving into a senior engineering role. Your background seems perfect for this!
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-success btn-sm" onclick="acceptRequest(this)">Accept</button>
+                            <button class="btn btn-danger btn-sm" onclick="declineRequest(this)">Decline</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    📈 Recent Activity
+                </h2>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="padding: 1rem; background: var(--neutral-gray-50); border-radius: 8px; border-left: 3px solid var(--success-green);">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Session Completed</div>
+                        <div style="color: var(--neutral-gray-600); font-size: 0.9rem;">Mentoring session with John Doe - React Fundamentals</div>
+                        <div style="color: var(--neutral-gray-600); font-size: 0.8rem; margin-top: 0.25rem;">2 hours ago</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--neutral-gray-50); border-radius: 8px; border-left: 3px solid var(--primary-cyan);">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">New Mentee Added</div>
+                        <div style="color: var(--neutral-gray-600); font-size: 0.9rem;">Sarah Wilson joined your mentorship program</div>
+                        <div style="color: var(--neutral-gray-600); font-size: 0.8rem; margin-top: 0.25rem;">1 day ago</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--neutral-gray-50); border-radius: 8px; border-left: 3px solid var(--warning-orange);">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Profile Updated</div>
+                        <div style="color: var(--neutral-gray-600); font-size: 0.9rem;">Added new skills: TypeScript, GraphQL</div>
+                        <div style="color: var(--neutral-gray-600); font-size: 0.8rem; margin-top: 0.25rem;">2 days ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Default senior data
+        const defaultSeniors = [
+            {
+                name: "John Smith",
+                role: "Senior Software Engineer",
+                company: "Google",
+                technologies: ["React", "Node.js", "Python"],
+                mentees: 8,
+                sessions: 45,
+                rating: 4.9,
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMwODkxYjIiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K"
+            },
+            {
+                name: "Sarah Johnson",
+                role: "Product Manager",
+                company: "Microsoft",
+                technologies: ["Product Strategy", "UX Design", "Analytics"],
+                mentees: 12,
+                sessions: 67,
+                rating: 4.8,
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNmNTllMGIiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K"
+            },
+            {
+                name: "Mike Chen",
+                role: "Data Scientist",
+                company: "Netflix",
+                technologies: ["Python", "Machine Learning", "SQL"],
+                mentees: 6,
+                sessions: 34,
+                rating: 4.7,
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMxMGI5ODEiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K"
+            },
+            {
+                name: "Emily Davis",
+                role: "DevOps Engineer",
+                company: "Amazon",
+                technologies: ["AWS", "Docker", "Kubernetes"],
+                mentees: 10,
+                sessions: 52,
+                rating: 4.9,
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM4YjVjZjYiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K"
+            }
+        ];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            loadSeniors();
+            loadUserStats();
+        });
+
+        function initializeDashboard() {
+            // Add intersection observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards
+            document.querySelectorAll('.stat-card, .section-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        function loadSeniors() {
+            const seniorGrid = document.getElementById('seniorGrid');
+            
+            // Load seniors from localStorage and combine with defaults
+            let seniors = [...defaultSeniors];
+            try {
+                const savedMentors = localStorage.getItem('mentors');
+                if (savedMentors) {
+                    const customMentors = JSON.parse(savedMentors);
+                    // Convert mentor format to senior format
+                    const convertedSeniors = customMentors.map(mentor => ({
+                        name: mentor.name,
+                        role: mentor.role,
+                        company: mentor.company || 'Tech Company',
+                        technologies: mentor.technologies || [],
+                        mentees: Math.floor(Math.random() * 15) + 1,
+                        sessions: Math.floor(Math.random() * 80) + 10,
+                        rating: (Math.random() * 1 + 4).toFixed(1),
+                        image: mentor.image || "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2YjczODAiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkM5Ljc5IDEyIDggMTAuMjEgOCA4UzkuNzkgNCA4IDRTMTIgNS43OSAxMiA4UzEwLjIxIDEyIDEyIDEyWk0xMiAxNEM5LjMzIDE0IDQgMTUuMzQgNCAyMFYyMkgyMFYyMEMxNiAxNS4zNCAxNC42NyAxNCAxMiAxNFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K"
+                    }));
+                    seniors = [...seniors, ...convertedSeniors];
+                }
+            } catch (error) {
+                console.error('Error loading mentors:', error);
+            }
+
+            seniorGrid.innerHTML = seniors.map(senior => `
+                <div class="senior-card">
+                    <div class="senior-header">
+                        <img src="${senior.image}" alt="${senior.name}" class="senior-avatar">
+                        <div class="senior-info">
+                            <h4>${senior.name}</h4>
+                            <p>${senior.role}</p>
+                            <p style="font-size: 0.8rem; color: var(--primary-cyan);">${senior.company}</p>
+                        </div>
+                    </div>
+                    <div class="senior-stats">
+                        <div class="senior-stat">
+                            <div class="senior-stat-number">${senior.mentees}</div>
+                            <div class="senior-stat-label">Mentees</div>
+                        </div>
+                        <div class="senior-stat">
+                            <div class="senior-stat-number">${senior.sessions}</div>
+                            <div class="senior-stat-label">Sessions</div>
+                        </div>
+                        <div class="senior-stat">
+                            <div class="senior-stat-number">${senior.rating}</div>
+                            <div class="senior-stat-label">Rating</div>
+                        </div>
+                    </div>
+                    <div class="senior-technologies">
+                        ${senior.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                    </div>
+                    <button class="btn btn-primary" onclick="viewProfile('${senior.name}')">View Profile</button>
+                </div>
+            `).join('');
+        }
+
+        function loadUserStats() {
+            // Simulate loading user stats
+            setTimeout(() => {
+                animateCounters();
+            }, 500);
+        }
+
+        function animateCounters() {
+            const counters = [
+                { id: 'juniorCount', target: 24 },
+                { id: 'sessionCount', target: 156 },
+                { id: 'seniorCount', target: 12 }
+            ];
+
+            counters.forEach(counter => {
+                const element = document.getElementById(counter.id);
+                let current = 0;
+                const increment = counter.target / 30;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= counter.target) {
+                        current = counter.target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, 50);
+            });
+
+            // Animate rating separately
+            const ratingElement = document.getElementById('ratingCount');
+            let currentRating = 0;
+            const ratingTimer = setInterval(() => {
+                currentRating += 0.1;
+                if (currentRating >= 4.8) {
+                    currentRating = 4.8;
+                    clearInterval(ratingTimer);
+                }
+                ratingElement.textContent = currentRating.toFixed(1);
+            }, 50);
+        }
+
+        function acceptRequest(button) {
+            const requestItem = button.closest('.request-item');
+            requestItem.style.transform = 'translateX(100%)';
+            requestItem.style.opacity = '0';
+            setTimeout(() => {
+                requestItem.remove();
+            }, 300);
+        }
+
+        function declineRequest(button) {
+            const requestItem = button.closest('.request-item');
+            requestItem.style.transform = 'translateX(-100%)';
+            requestItem.style.opacity = '0';
+            setTimeout(() => {
+                requestItem.remove();
+            }, 300);
+        }
+
+        function viewProfile(name) {
+            // Redirect to mentor profile dashboard
+            window.location.href = 'mentor-dashboard.html';
+        }
+
+        // Add click handlers for interactive elements
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-primary')) {
+                e.target.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    e.target.style.transform = '';
+                }, 150);
+            }
+        });
+    </script>
+</body>
+</html>
